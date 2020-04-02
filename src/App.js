@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
+class App extends Component() {
+  return(
+    <div className = "App" >
       <header className="App-header">
         <div className="calculator">
           <div className="screen">
