@@ -1,62 +1,58 @@
 import React, { Component } from 'react';
-import { Button } from "./button.jsx";
-import { Input } from "./input.jsx";
-import { CancelButton } from "./CancelButton.jsx";
-import * as math from "mathjs";
+import './App.css';
+import KeyPad from './components/KeyPad';
+import Output from './components/Output';
 
 class App extends Component {
+  state = {
+    result: ''
+  }
+  buttonPressed = (buttonName) => {
+    if (buttonName === '=') {
+      this.calculate()
+    } else if
+      (buttonName === 'C') {
+      this.reset();
+    } else if
+      (buttonName === 'CE') {
+      this.backspace();
+    } else
+      this.setState({
+        result: this.state.result + buttonName
+      });
+  };
+  backspace = () => {
+    this.setState({
+      result: this.state.result.slice(0, -1)
+    })
+  }
+  reset = () => {
+    this.setState({
+      result: ""
+    })
+  }
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      input: ""
+  calculate = () => {
+    try {
+      this.setState({
+        result: eval(this.state.result)
+      });
+    } catch (e) {
+      this.setState({
+        result: "error"
+      })
     }
-
-    this.addToInput = val => {
-
-      this.setState({ input: this.state.input = val });
-    };
-
-    this.handleEqual = () => {
-      this.setState({ input: math.eval(this.state.input + this.val) })
-    }
-
-
-
+  };
+  render() {
     return (
-      <div className="App" >
-        <div className="calculator">
-          <input input={this.state.input}></input>
-          <div className="button">
-            <Button handleClick={this.addToInput}>1</Button>
-            <Button handleClick={this.addToInput}>2</Button>
-            <Button handleClick={this.addToInput}>3</Button>
-            <Button handleClick={this.addToInput}>+</Button>
-          </div>
-          <div className="button">
-            <Button handleClick={this.addToInput}>4</Button>
-            <Button handleClick={this.addToInput}>5</Button>
-            <Button handleClick={this.addToInput}>6</Button>
-            <Button handleClick={this.addToInput}>-</Button>
-          </div>
-          <div className="button">
-            <Button handleClick={this.addToInput}>7</Button>
-            <Button handleClick={this.addToInput}>8</Button>
-            <Button handleClick={this.addToInput}>9</Button>
-            <Button handleClick={this.addToInput}>x</Button>
-          </div>
-          <div className="button">
-            <Button handleClick={() => this.handleEqual()}>=</Button>
-            <Button handleClick={this.addToInput}>0</Button>
-            <Button handleClick={this.addToInput}>.</Button>
-            <Button handleClick={this.addToInput}>/</Button>
-          </div>
-          <div className="button">
-            <CancelButton handleClear={() => this.setState({ input: "" })}>C</CancelButton>
-          </div>
+      <div className="App">
+        <div className="calc-body">
+          <Output result={this.state.result} />
+          <KeyPad buttonPressed={this.buttonPressed} />
         </div>
-      </div>);
+      </div>
+    );
   }
 }
-default export App;
+
+export default App;
